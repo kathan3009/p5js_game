@@ -26,7 +26,8 @@ function draw() {
 }
 
 function pattern() {
-  rotateZ(randAngle);
+  rotateX(randAngle);
+
   for (let i = 0; i < 400; i++) {
     let r = random(60);
     rotate(frameCount / 50)
@@ -46,7 +47,7 @@ function design() {
     rotate(frameCount / 80)
     beginShape()
     for (var j = 0; j < 360; j += rand) {
-      var rad = i * 3;
+      var rad = i * 5;
       var x = rad * cos(j);
       var y = rad * sin(j);
       var z = sin(frameCount * 2 + i * 5) * 50
