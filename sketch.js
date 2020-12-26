@@ -1,6 +1,48 @@
 let rand;
 let randAngle;
-let funRand
+let funRand;
+let arr = ["#ffffff","#1e2640","#FF0000","#800000","#FFFF00"]
+let particle=[];
+class Dots{
+  
+  constructor(){
+  this.dot = createVector(random(windowWidth),random(windowHeight))
+  this.vel = createVector(random(-8,8),random(-8,8))
+  this.size = 10;
+    
+  }
+  update(){
+    this.dot.add(this.vel)
+    this.edges()
+  }
+  draw(){
+    fill(random(arr))
+    circle(this.dot.x,this.dot.y,this.size) 
+  }
+  
+  edges(){
+    if(this.dot.x<0 || this.dot.x>width)
+      {
+        this.vel.x=this.vel.x*-1
+      }
+    if(this.dot.y<0 || this.dot.y>height)
+      {
+        this.vel.y=this.vel.y*-1
+      }
+  }
+  connect(particles){
+    particles.forEach(particle =>{ 
+         
+         let d = dist(this.dot.x,this.dot.y,particle.dot.x,particle.dot.y)
+         if(d<90)
+           {
+             stroke("rgb(210,123,55,0.1)")
+             line(this.dot.x,this.dot.y,particle.dot.x,particle.dot.y)
+           }
+    })
+  }
+}
+let p;
 
 function setup() {
 
@@ -8,8 +50,11 @@ function setup() {
   angleMode(DEGREES);
   rand = int(random(1, 10) * 10)
   randAngle = int(random(2, 20) * 10)
-  funRand = int(random(0, 3))
-
+  funRand = int(random(0, 4))
+  for(var i=0 ; i<windowWidth/10;i++)
+  {
+    particle.push(new Dots())
+  }
 
 }
 
@@ -24,6 +69,9 @@ function draw() {
       break;
     case 2:
       design2()
+      break;
+      case 3:
+      design3()
       break;
     default:
 
@@ -84,5 +132,13 @@ function design2() {
 
     endShape(CLOSE);
   }
-
+ 
+}
+function design3(){
+  translate(-windowWidth/2,-windowHeight/2)
+  particle.forEach((p,index) => {
+    p.update()
+    p.draw()
+    p.connect(particle.slice(index))
+  })
 }
